@@ -19,8 +19,8 @@ It can:
 
 #### Mount cron files from host:
 
-You can mount files from host as: /dir_with_cron_files_on_host:/etc/cron.d, when container
-starts, it will copy all files from /dir_with_cron_files_on_host into /etc/cron.d
+You can mount files from host as: /path/to/host/crontabs:/etc/cron.d, when container
+starts, it will copy all files from /path/to/host/crontabs into /etc/cron.d
 
 #### Where are my logs?
 By default log files are placed in /var/log/cron/cron.log 
@@ -29,4 +29,44 @@ By default log files are placed in /var/log/cron/cron.log
 This Dockerfile was inspired by: https://github.com/xordiv/docker-alpine-cron,
 many thanks to xordiv for the idea.
 
+#### Usage example:
+
+##### Without access to host Docker:
+```
+docker run -d \
+-v /path/to/host/crontabs:/etc/cron.d \
+timonweb/docker-cron-swissknife:non-stable
+```
+
+##### With access to host Docker:
+```
+docker run -d \
+-v /path/to/host/crontabs:/etc/cron.d \
+-v /var/run/docker.sock:/var/run/docker.sock \
+-v /usr/bin/docker:/usr/bin/docker \
+timonweb/docker-cron-swissknife:non-stable
+```
+
+##### With cronjob defined via environment variable:
+```
+docker run -d \
+-v /path/to/host/crontabs:/etc/cron.d \
+-v /var/run/docker.sock:/var/run/docker.sock \
+-v /usr/bin/docker:/usr/bin/docker \
+-e 'CRON_STRINGS=* * * * * docker ps' \
+timonweb/docker-cron-swissknife:non-stable
+```
+
+##### As a service in docker-compose.yml:
+```
+cron:
+    image: timonweb/docker-cron-swissknife:non-stable
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/usr/bin/docker:/usr/bin/docker"
+    environment:
+      - CRON_STRINGS=* * * * * docker ps
+```
+
 #### Copyright
+Copyright (c) 2018 Tim Kamanin [https://timonweb.com](https://www.google.com)
