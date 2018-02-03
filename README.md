@@ -25,10 +25,6 @@ starts, it will copy all files from /path/to/host/crontabs into /etc/cron.d
 #### Where are my logs?
 By default log files are placed in /var/log/cron/cron.log 
 
-#### Special thanks
-This Dockerfile was inspired by: https://github.com/xordiv/docker-alpine-cron,
-many thanks to xordiv for the idea.
-
 #### Usage example:
 
 ##### Without access to host Docker:
@@ -67,6 +63,10 @@ cron:
     environment:
       - CRON_STRINGS=* * * * * docker ps
 ```
+
+#### Special thanks
+This Dockerfile was inspired by: https://github.com/xordiv/docker-alpine-cron,
+many thanks to xordiv for the idea.
 
 #### Copyright
 Copyright (c) 2018 Tim Kamanin [https://timonweb.com](https://www.google.com)
